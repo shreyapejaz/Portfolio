@@ -1,16 +1,65 @@
 import React from "react"
+import {
+  Card,
+  CardTitle,
+  CardText,
+  CardSubtitle,
+  CardBody,
+} from 'reactstrap'
+import { Link } from 'gatsby'
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
+import { graphql } from 'gatsby'
 
-const BlogPage = () => (
+const BlogPage = ({ data }) => (
   <Layout>
-    <SEO title="Blog" />
-    <h1>My blogs</h1>
+    <SEO title="Blogs" />
+    {data.allMarkdownRemark.edges.map(post => (
+      <div key={post.node.id}>
+         <Card>
+    <CardBody>
+      <CardTitle>
+      {post.node.frontmatter.title}
+      </CardTitle>
+      <CardSubtitle>
+        <span className="text-info">{post.node.frontmatter.date}</span> by{' '}
+        <span className="text-info">{post.node.frontmatter.author}</span>
+      </CardSubtitle>
+      <CardText>{post.node.excerpt}</CardText>
+      <Link
+        to={post.node.frontmatter.path}
+        className="btn btn-outline-primary float-right text-uppercase"
+      >
+        Read more
+      </Link>
+    </CardBody>
+  </Card>
+  </div>
 
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-    </div>
+    ))}
+
   </Layout>
 )
+
+export const indexQuery = graphql`
+  query indexQuery {
+    allMarkdownRemark{
+      edges {
+        node {
+          id
+          frontmatter {
+            title
+            date
+            author
+            path
+          }
+          excerpt
+        }
+      }  
+    }
+  }    
+`
+
 
 export default BlogPage
