@@ -20,7 +20,10 @@ const BlogPage = ({ data }) => (
          <Card>
     <CardBody>
       <CardTitle>
-      {post.node.frontmatter.title}
+      <Link
+        to={post.node.frontmatter.path}>
+        {post.node.frontmatter.title}
+      </Link>
       </CardTitle>
       <CardSubtitle>
         <span className="text-info">{post.node.frontmatter.date}</span> by{' '}
@@ -44,7 +47,7 @@ const BlogPage = ({ data }) => (
 
 export const indexQuery = graphql`
   query indexQuery {
-    allMarkdownRemark{
+    allMarkdownRemark(sort: {fields: [frontmatter___title],order:DESC}) {
       edges {
         node {
           id
