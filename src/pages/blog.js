@@ -12,16 +12,18 @@ import Layout from "../components/layout"
 import SEO from "../components/seo"
 import { graphql } from 'gatsby'
 import {Row, Col} from 'reactstrap'
+import Sidebar from "../components/Sidebar"
 
 const BlogPage = ({ data }) => (
   <Layout>
     <SEO title="Blogs" />
     <Row>
+    <Col md="8">
     
     {data.allMarkdownRemark.edges.map(post => (
-      <div key={post.node.id}>
+      <div className="container" key={post.node.id}>
            
-      <Col md="12">
+      
       <Card>
       <Link
 to={post.node.frontmatter.path}>
@@ -46,14 +48,13 @@ className="btn btn-outline-primary float-right text-uppercase"
 Read more
 </Link>
 </CardBody>
-</Card>
-</Col>
-    
-         
+</Card>       
   </div>
-  
-
-    ))}
+     ))}
+    </Col>
+    <Col md="4">
+    <Sidebar/>
+    </Col>
    </Row>
   </Layout>
 )
@@ -71,7 +72,7 @@ export const indexQuery = graphql`
             path
             image{
               childImageSharp{
-                fluid(maxWidth: 800){
+                fluid(maxWidth: 300){
                 ...GatsbyImageSharpFluid
                 }
               }
